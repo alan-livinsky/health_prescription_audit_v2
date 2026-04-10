@@ -13,7 +13,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
         <!-- ======================================================= -->
 
         <record model="res.group" id="group_prescription_auditor">
-            <field name="name">Prescription Auditor</field>
+            <field name="name">Prescription Auditor v2</field>
         </record>
 
     </data>
