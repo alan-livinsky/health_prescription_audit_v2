@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <tree>
     <field name="name"/>
-    <field name="prescription"/>
-    <field name="patient"/>
     <field name="prescription_date"/>
     <field name="audit_state"/>
 </tree>
