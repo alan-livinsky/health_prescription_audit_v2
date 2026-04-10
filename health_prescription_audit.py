@@ -49,8 +49,8 @@ class PrescriptionLine(metaclass=PoolMeta):
     def get_prescription_context(cls, lines, name):
         result = {}
         # Batch-read the prescription FK for all lines in one query
-        line_data = cls.read([l.id for l in lines], ['prescription'])
-        line_to_prescription = {d['id']: d['prescription'] for d in line_data}
+        line_data = cls.read([l.id for l in lines], ['name'])
+        line_to_prescription = {d['id']: d['name'] for d in line_data}
 
         prescription_ids = list({p for p in line_to_prescription.values() if p})
         prescription_map = {}

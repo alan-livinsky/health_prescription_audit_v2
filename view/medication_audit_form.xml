@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <form>
     <group string="Prescription" colspan="4" col="4" id="group_prescription_context">
-        <field name="prescription" colspan="2"/>
+        <field name="name" colspan="2"/>
         <field name="patient" colspan="2"/>
         <field name="prescription_date" colspan="2"/>
     </group>
     <group string="Medication" colspan="4" col="2" id="group_medication">
-        <field name="name" colspan="2"/>
+        <field name="medicament" colspan="2"/>
     </group>
     <separator id="sep_audit" colspan="4"/>
     <group string="Audit Status" colspan="4" col="6" id="group_audit_status">
