@@ -6,7 +6,7 @@ SPDX-License-Identifier: GPL-3.0-or-later
 -->
 
 <tryton>
-    <data>
+    <data noupdate="1">
 
         <!-- ======================================================= -->
         <!-- GROUP                                                     -->
@@ -15,6 +15,9 @@ SPDX-License-Identifier: GPL-3.0-or-later
         <record model="res.group" id="group_prescription_auditor">
             <field name="name">Prescription Auditor</field>
         </record>
+
+    </data>
+    <data>
 
         <!-- ======================================================= -->
         <!-- VIEWS                                                     -->
