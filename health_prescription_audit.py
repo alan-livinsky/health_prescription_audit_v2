@@ -48,17 +48,25 @@ class PrescriptionLine(metaclass=PoolMeta):
     @classmethod
     def get_prescription_context(cls, lines, name):
         result = {}
+        # Batch-read the prescription FK for all lines in one query
+        line_data = cls.read([l.id for l in lines], ['prescription'])
+        line_to_prescription = {d['id']: d['prescription'] for d in line_data}
+
+        prescription_ids = list({p for p in line_to_prescription.values() if p})
+        prescription_map = {}
+        if prescription_ids:
+            Prescription = Pool().get('gnuhealth.prescription.order')
+            try:
+                rows = Prescription.read(prescription_ids, [name])
+                prescription_map = {r['id']: r[name] for r in rows}
+            except Exception:
+                logger.warning(
+                    'get_prescription_context: field %r not found on '
+                    'gnuhealth.prescription.order', name)
+
         for line in lines:
-            if line.prescription:
-                val = getattr(line.prescription, name, None)
-                if val is None:
-                    result[line.id] = None
-                elif hasattr(val, 'id'):
-                    result[line.id] = val.id
-                else:
-                    result[line.id] = val
-            else:
-                result[line.id] = None
+            p_id = line_to_prescription.get(line.id)
+            result[line.id] = prescription_map.get(p_id) if p_id else None
         return result
 
     @staticmethod
