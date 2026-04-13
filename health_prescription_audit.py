@@ -16,12 +16,12 @@ class PrescriptionLine(metaclass=PoolMeta):
     __name__ = 'gnuhealth.prescription.line'
 
     audit_state = fields.Selection([
-        ('pending', 'Pending Audit'),
+        ('pending', 'Pendiente'),
         ('aprobada', 'Aprobada'),
         ('rechazada', 'Rechazada'),
-    ], 'Audit Status', sort=False,
+    ], 'Estado Auditoría', sort=False,
         states={'readonly': True},
-        help='Auditing status for this medication line')
+        help='Estado de auditoría para este medicamento')
 
     audit_notes = fields.Text('Audit Notes',
         states={'readonly': Eval('audit_state') != 'pending'},

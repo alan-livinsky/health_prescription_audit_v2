@@ -1,35 +1,34 @@
 <?xml version="1.0"?>
 <form>
-    <group string="Prescription" colspan="4" col="4" id="group_prescription_context">
-        <field name="name" colspan="2"/>
+    <group string="Receta" colspan="4" col="4" id="group_prescription_context">
+        <field name="name" string="ID Receta" colspan="2"/>
         <field name="patient" colspan="2"/>
-        <field name="prescription_date" colspan="2"/>
     </group>
-    <group string="Medication" colspan="4" col="2" id="group_medication">
+    <group string="Medicamento" colspan="4" col="2" id="group_medication">
         <field name="medicament" colspan="2"/>
     </group>
     <separator id="sep_audit" colspan="4"/>
-    <group string="Audit Status" colspan="4" col="6" id="group_audit_status">
-        <field name="audit_state" colspan="2"/>
-        <field name="audit_date" colspan="2"/>
-        <field name="audit_user" colspan="2"/>
+    <group string="Estado Auditoría" colspan="4" col="6" id="group_audit_status">
+        <field name="audit_state" string="Estado" colspan="2"/>
+        <field name="audit_date" string="Fecha Auditoría" colspan="2"/>
+        <field name="audit_user" string="Auditor" colspan="2"/>
     </group>
-    <group string="Audit Actions" colspan="4" col="6" id="group_audit_actions">
+    <group string="Acciones" colspan="4" col="6" id="group_audit_actions">
         <button name="approve_line"
-                string="Approve"
+                string="Aceptar"
                 icon="tryton-ok"
-                help="Approve this medication"
+                help="Aprobar este medicamento"
                 colspan="2"/>
         <button name="reject_line"
-                string="Reject"
+                string="Rechazar"
                 icon="tryton-cancel"
-                help="Reject this medication"
+                help="Rechazar este medicamento"
                 colspan="2"/>
         <button name="reset_line"
-                string="Reset Audit"
+                string="Restablecer"
                 icon="tryton-refresh"
-                help="Reset audit status to pending"
+                help="Restablecer auditoría a pendiente"
                 colspan="2"/>
     </group>
-    <field name="audit_notes" colspan="4"/>
+    <field name="audit_notes" string="Notas" colspan="4"/>
 </form>
