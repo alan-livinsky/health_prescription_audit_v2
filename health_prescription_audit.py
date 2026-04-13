@@ -1,13 +1,17 @@
 # SPDX-FileCopyrightText: 2024 Custom GNU Health
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import csv
+import io
+
 from trytond.model import fields, ModelView
 from trytond.pool import Pool, PoolMeta
 from trytond.pyson import Eval
 from trytond.transaction import Transaction
+from trytond.wizard import Button, StateView, Wizard
 import logging
 
-__all__ = ['PrescriptionLine']
+__all__ = ['PrescriptionLine', 'ExportResult', 'PrescriptionAuditExport']
 logger = logging.getLogger(__name__)
 
 
@@ -127,3 +131,84 @@ class PrescriptionLine(metaclass=PoolMeta):
             'audit_user': None,
         })
         logger.info('Medication line(s) audit reset to pending')
+
+
+class ExportResult(ModelView):
+    'Prescription Audit Export Result'
+    __name__ = 'gnuhealth.prescription.audit.export.result'
+
+    csv_file = fields.Binary('Archivo CSV', filename='filename')
+    filename = fields.Char('Nombre de archivo', readonly=True)
+
+
+class PrescriptionAuditExport(Wizard):
+    'Export Prescription Audit to CSV'
+    __name__ = 'gnuhealth.prescription.audit.export'
+
+    start_state = 'result'
+    result = StateView(
+        'gnuhealth.prescription.audit.export.result',
+        'health_prescription_audit_v2.view_audit_export_result',
+        [Button('Cerrar', 'end', 'tryton-ok', default=True)])
+
+    _STATE_LABELS = {
+        'pending': 'Pendiente',
+        'aprobada': 'Aprobada',
+        'rechazada': 'Rechazada',
+    }
+
+    def default_result(self, fields_names):
+        PrescriptionLine = Pool().get('gnuhealth.prescription.line')
+        active_ids = Transaction().context.get('active_ids') or []
+
+        if active_ids:
+            lines = PrescriptionLine.browse(active_ids)
+        else:
+            lines = PrescriptionLine.search([])
+
+        output = io.StringIO()
+        writer = csv.writer(output)
+        writer.writerow([
+            'ID Receta', 'Paciente', 'Medicamento',
+            'Estado Auditoría', 'Fecha Auditoría', 'Auditor', 'Notas',
+        ])
+
+        for line in lines:
+            try:
+                prescription_id = line.name.id if line.name else ''
+            except Exception:
+                prescription_id = ''
+            try:
+                patient_name = line.patient.rec_name if line.patient else ''
+            except Exception:
+                patient_name = ''
+            try:
+                medicament_name = (
+                    line.medicament.rec_name if line.medicament else '')
+            except Exception:
+                medicament_name = ''
+            try:
+                audit_date = (
+                    str(line.audit_date.date()) if line.audit_date else '')
+            except Exception:
+                audit_date = ''
+            try:
+                auditor = line.audit_user.name if line.audit_user else ''
+            except Exception:
+                auditor = ''
+
+            writer.writerow([
+                prescription_id,
+                patient_name,
+                medicament_name,
+                self._STATE_LABELS.get(line.audit_state, line.audit_state or ''),
+                audit_date,
+                auditor,
+                line.audit_notes or '',
+            ])
+
+        csv_bytes = output.getvalue().encode('utf-8-sig')  # BOM for Excel
+        return {
+            'csv_file': csv_bytes,
+            'filename': 'auditoria_medicamentos.csv',
+        }

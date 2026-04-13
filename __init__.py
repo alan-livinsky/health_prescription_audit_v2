@@ -8,4 +8,8 @@ from . import health_prescription_audit
 def register():
     Pool.register(
         health_prescription_audit.PrescriptionLine,
+        health_prescription_audit.ExportResult,
         module='health_prescription_audit_v2', type_='model')
+    Pool.register(
+        health_prescription_audit.PrescriptionAuditExport,
+        module='health_prescription_audit_v2', type_='wizard')

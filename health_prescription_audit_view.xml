@@ -117,6 +117,27 @@ SPDX-License-Identifier: GPL-3.0-or-later
         </record>
 
         <!-- ======================================================= -->
+        <!-- EXPORT WIZARD                                            -->
+        <!-- ======================================================= -->
+
+        <record model="ir.ui.view" id="view_audit_export_result">
+            <field name="model">gnuhealth.prescription.audit.export.result</field>
+            <field name="name">medication_audit_export</field>
+            <field name="type">form</field>
+        </record>
+
+        <record model="ir.action.wizard" id="act_export_audit_wizard">
+            <field name="name">Exportar a CSV</field>
+            <field name="wiz_name">gnuhealth.prescription.audit.export</field>
+        </record>
+
+        <record model="ir.action.keyword" id="keyword_export_audit">
+            <field name="keyword">form_action</field>
+            <field name="action" ref="act_export_audit_wizard"/>
+            <field name="model">gnuhealth.prescription.line,-1</field>
+        </record>
+
+        <!-- ======================================================= -->
         <!-- BUTTON RULES                                             -->
         <!-- ======================================================= -->
 
