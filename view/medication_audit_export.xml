@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <form>
     <label name="filename"/>
-    <field name="filename" readonly="1"/>
-    <field name="csv_file" colspan="4"/>
+    <field name="filename"/>
+    <field name="csv_file" filename="filename" readonly="1" colspan="4"/>
 </form>
